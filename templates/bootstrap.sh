@@ -20,6 +20,7 @@ rm -rf awscliv2.zip aws
 
 # set up docker-compose.yml
 mkdir compose letsencrypt bitwarden
+chown ubuntu:ubuntu bitwarden
 cat >> compose/docker-compose.yml << 'EOF'
 version: '3.3'
 
@@ -47,12 +48,14 @@ services:
   bitwarden:
     image: "bitwardenrs/server"
     container_name: "bitwarden"
+    user: 1000:1000
     volumes:
       - "/home/ubuntu/bitwarden:/data"
     environment:
+      ROCKET_PORT: "8080"
       WEBSOCKET_ENABLED: "true"
       SIGNUPS_ALLOWED: "${signups_allowed}"
-      ADMIN_TOKEN: "${admin_token}"
+      %{ if enable_admin_page }ADMIN_TOKEN: "${admin_token}"%{ endif }
       DOMAIN: "https://${domain}"
       LOG_FILE: "/data/bitwarden.log"
       SMTP_HOST: "${smtp_host}"
@@ -74,7 +77,7 @@ services:
       - "traefik.http.routers.bitwarden-ui-http.entrypoints=web"
       - "traefik.http.routers.bitwarden-ui-http.middlewares=redirect-https"
       - "traefik.http.routers.bitwarden-ui-http.service=bitwarden-ui"
-      - "traefik.http.services.bitwarden-ui.loadbalancer.server.port=80"
+      - "traefik.http.services.bitwarden-ui.loadbalancer.server.port=8080"
       - "traefik.http.routers.bitwarden-websocket-https.rule=Host(`${domain}`) && Path(`/notifications/hub`)"
       - "traefik.http.routers.bitwarden-websocket-https.entrypoints=websecure"
       - "traefik.http.routers.bitwarden-websocket-https.tls=true"

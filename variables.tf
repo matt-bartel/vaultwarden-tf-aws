@@ -58,6 +58,11 @@ variable "bitwarden_smtp_password" {
   sensitive = true
 }
 
+variable "bitwarden_enable_admin_page" {
+  type = bool
+  default = true
+}
+
 variable "hosted_zone_id" {
   type      = string
   sensitive = true
@@ -90,4 +95,9 @@ variable "ec2_key_pair_name" {
 variable "ec2_instance_type" {
   type    = string
   default = "t4g.micro"
+}
+
+variable "ec2_volume_size" {
+  type = number
+  default = 8
 }

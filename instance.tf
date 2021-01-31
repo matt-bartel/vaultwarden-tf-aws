@@ -22,7 +22,7 @@ resource "random_password" "admin_token" {
 }
 
 resource "aws_network_interface" "net" {
-  subnet_id = aws_subnet.public.id
+  subnet_id       = aws_subnet.public.id
   security_groups = [aws_security_group.public.id]
 
   tags = merge(
@@ -36,7 +36,7 @@ resource "aws_network_interface" "net" {
 resource "aws_instance" "instance" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.ec2_instance_type
-  key_name = var.ec2_key_pair_name
+  key_name      = var.ec2_key_pair_name
 
   network_interface {
     network_interface_id = aws_network_interface.net.id
@@ -50,26 +50,27 @@ resource "aws_instance" "instance" {
   root_block_device {
     encrypted   = true
     volume_type = "gp3"
-    volume_size = 16
+    volume_size = var.ec2_volume_size
     iops        = 3000
     throughput  = 125
   }
 
   user_data = templatefile("templates/bootstrap.sh", {
-    region          = var.region
-    aws_key_id      = aws_iam_access_key.user.id
-    aws_secret_key  = aws_iam_access_key.user.secret
-    acme_email      = var.bitwarden_acme_email
-    signups_allowed = var.bitwarden_signups_allowed
-    domain          = var.domain
-    smtp_host       = var.bitwarden_smtp_host
-    smtp_port       = var.bitwarden_smtp_port
-    smtp_ssl        = var.bitwarden_smtp_ssl
-    smtp_username   = var.bitwarden_smtp_username
-    smtp_password   = var.bitwarden_smtp_password
-    admin_token     = random_password.admin_token.result
-    backup_schedule = var.backup_schedule
-    bucket          = aws_s3_bucket.bucket.id
+    region            = var.region
+    aws_key_id        = aws_iam_access_key.user.id
+    aws_secret_key    = aws_iam_access_key.user.secret
+    acme_email        = var.bitwarden_acme_email
+    signups_allowed   = var.bitwarden_signups_allowed
+    domain            = var.domain
+    smtp_host         = var.bitwarden_smtp_host
+    smtp_port         = var.bitwarden_smtp_port
+    smtp_ssl          = var.bitwarden_smtp_ssl
+    smtp_username     = var.bitwarden_smtp_username
+    smtp_password     = var.bitwarden_smtp_password
+    admin_token       = random_password.admin_token.result
+    enable_admin_page = var.bitwarden_enable_admin_page
+    backup_schedule   = var.backup_schedule
+    bucket            = aws_s3_bucket.bucket.id
   })
 
   tags = merge(
