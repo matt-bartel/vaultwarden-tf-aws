@@ -97,12 +97,12 @@ EOF
 export AWS_ACCESS_KEY_ID="${aws_key_id}"
 export AWS_SECRET_ACCESS_KEY="${aws_secret_key}"
 export AWS_DEFAULT_REGION="${region}"
-if [ -n "$(aws s3 ls ${bucket}/bitwarden-backup.tar.gz)" ]
+if [ -n "$(aws s3 ls ${bucket}/bitwarden-backup.tar.xz)" ]
 then
   echo "bitwarden backup found, restoring"
-  aws s3 cp s3://${bucket}/bitwarden-backup.tar.gz bitwarden-backup.tar.gz
-  tar -xzvf bitwarden-backup.tar.gz
-  rm bitwarden-backup.tar.gz
+  aws s3 cp s3://${bucket}/bitwarden-backup.tar.xz bitwarden-backup.tar.xz
+  tar --xz -xf bitwarden-backup.tar.xz
+  rm bitwarden-backup.tar.xz
 fi
 
 # start bitwarden
@@ -124,9 +124,9 @@ export AWS_DEFAULT_REGION="${region}"
 cd /home/ubuntu/compose
 docker-compose down
 cd ..
-tar -czvf bitwarden-backup.tar.gz bitwarden letsencrypt
-/usr/local/bin/aws s3 cp bitwarden-backup.tar.gz s3://${bucket}/bitwarden-backup.tar.gz --sse
-rm bitwarden-backup.tar.gz
+tar --xz -cf bitwarden-backup.tar.xz bitwarden letsencrypt
+/usr/local/bin/aws s3 cp bitwarden-backup.tar.xz s3://${bucket}/bitwarden-backup.tar.xz --sse
+rm bitwarden-backup.tar.xz
 cd compose
 docker-compose pull
 docker-compose up -d

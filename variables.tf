@@ -60,7 +60,6 @@ variable "bitwarden_smtp_password" {
 
 variable "bitwarden_enable_admin_page" {
   type = bool
-  default = true
 }
 
 variable "hosted_zone_id" {
