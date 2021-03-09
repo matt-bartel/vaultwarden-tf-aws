@@ -166,7 +166,7 @@ port = 80,443
 filter = bitwarden
 action = iptables-allports[chain=FORWARD]
 logpath = /home/ubuntu/bitwarden/bitwarden.log
-maxretry = 3
+maxretry = 5
 bantime = 14400
 findtime = 14400
 EOF

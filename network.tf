@@ -93,6 +93,11 @@ resource "aws_vpc_endpoint" "s3" {
   service_name = "com.amazonaws.${var.region}.s3"
 }
 
+resource "aws_vpc_endpoint_route_table_association" "route_table_association" {
+  route_table_id  = aws_default_route_table.r.id
+  vpc_endpoint_id = aws_vpc_endpoint.s3.id
+}
+
 resource "aws_eip" "ip" {
   instance = aws_instance.instance.id
   vpc      = true
