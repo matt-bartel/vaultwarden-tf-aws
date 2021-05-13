@@ -46,7 +46,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock"
     restart: unless-stopped
   bitwarden:
-    image: "bitwardenrs/server"
+    image: "vaultwarden/server"
     container_name: "bitwarden"
     user: 1000:1000
     volumes:
