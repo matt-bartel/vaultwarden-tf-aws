@@ -182,7 +182,6 @@ tar --xz -cf bitwarden-backup.tar.xz bitwarden letsencrypt
 /usr/local/bin/aws s3 cp bitwarden-backup.tar.xz s3://${bucket}/bitwarden-backup.tar.xz --sse
 rm bitwarden-backup.tar.xz
 cd compose
-docker-compose pull
 docker-compose up -d
 EOF
 chmod +x /home/ubuntu/backup.sh
