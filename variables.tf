@@ -14,7 +14,7 @@ variable "public_subnet_cidr" {
 }
 
 variable "ssh_cidr" {
-  type = string
+  type    = string
   default = "0.0.0.0/0"
 }
 
@@ -97,6 +97,18 @@ variable "ec2_instance_type" {
 }
 
 variable "ec2_volume_size" {
-  type = number
+  type    = number
   default = 8
 }
+
+variable "diun_notify_email" {
+  type        = string
+  description = "Email for docker image update notifications"
+}
+
+variable "diun_watch_schedule" {
+  type        = string
+  default     = "0 */6 * * *"
+  description = "Schedule for checking for new docker image versions"
+}
+

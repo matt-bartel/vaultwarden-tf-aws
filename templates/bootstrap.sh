@@ -19,12 +19,25 @@ sudo ./aws/install
 rm -rf awscliv2.zip aws
 
 # set up docker-compose.yml
-mkdir compose letsencrypt bitwarden
+mkdir compose letsencrypt bitwarden diun
 chown ubuntu:ubuntu bitwarden
 cat >> compose/docker-compose.yml << 'EOF'
-version: '3.3'
+version: '3.5'
 
 services:
+  dockerproxy:
+    image: tecnativa/docker-socket-proxy
+    container_name: dockerproxy
+    ports:
+      - 2375
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      CONTAINERS: 1
+      IMAGES: 1
+    networks:
+      - internal
+    restart: unless-stopped
   traefik:
     image: "traefik:v2.4"
     container_name: "traefik"
@@ -33,6 +46,8 @@ services:
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
       - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.endpoint=tcp://dockerproxy:2375"
+      - "--providers.docker.network=internal"
       - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
       - "--certificatesresolvers.myresolver.acme.email=${acme_email}"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
@@ -43,7 +58,11 @@ services:
       - "443:443"
     volumes:
       - "/home/ubuntu/letsencrypt:/letsencrypt"
-      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - default
+      - internal
+    depends_on:
+      - dockerproxy
     restart: unless-stopped
   bitwarden:
     image: "vaultwarden/server"
@@ -51,6 +70,8 @@ services:
     user: 1000:1000
     volumes:
       - "/home/ubuntu/bitwarden:/data"
+    networks:
+      - default
     environment:
       ROCKET_PORT: "8080"
       WEBSOCKET_ENABLED: "true"
@@ -90,6 +111,39 @@ services:
     depends_on:
       - traefik
     restart: unless-stopped
+  diun:
+    image: crazymax/diun
+    container_name: diun
+    volumes:
+      - "/home/ubuntu/diun:/data"
+    networks:
+      - default
+      - internal
+    environment:
+      LOG_LEVEL: "info"
+      DIUN_WATCH_SCHEDULE: "${diun_watch_schedule}"
+      DIUN_PROVIDERS_DOCKER: "true"
+      DIUN_PROVIDERS_DOCKER_ENDPOINT: "tcp://dockerproxy:2375"
+      DIUN_PROVIDERS_DOCKER_WATCHBYDEFAULT: "true"
+      DIUN_NOTIF_MAIL_HOST: "${smtp_host}"
+      DIUN_NOTIF_MAIL_PORT: "${smtp_port}"
+      DIUN_NOTIF_MAIL_SSL: "${smtp_ssl}"
+      DIUN_NOTIF_MAIL_FROM: "diun@${domain}"
+      DIUN_NOTIF_MAIL_TO: "${diun_notify_email}"
+      DIUN_NOTIF_MAIL_USERNAME: "${smtp_username}"
+      DIUN_NOTIF_MAIL_PASSWORD: "${smtp_password}"
+    depends_on:
+      - dockerproxy
+      - traefik
+      - bitwarden
+    restart: unless-stopped
+networks:
+  default:
+    name: public
+    driver: bridge
+  internal:
+    name: private
+    internal: true
 
 EOF
 

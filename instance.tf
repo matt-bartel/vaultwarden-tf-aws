@@ -56,21 +56,23 @@ resource "aws_instance" "instance" {
   }
 
   user_data = templatefile("templates/bootstrap.sh", {
-    region            = var.region
-    aws_key_id        = aws_iam_access_key.user.id
-    aws_secret_key    = aws_iam_access_key.user.secret
-    acme_email        = var.bitwarden_acme_email
-    signups_allowed   = var.bitwarden_signups_allowed
-    domain            = var.domain
-    smtp_host         = var.bitwarden_smtp_host
-    smtp_port         = var.bitwarden_smtp_port
-    smtp_ssl          = var.bitwarden_smtp_ssl
-    smtp_username     = var.bitwarden_smtp_username
-    smtp_password     = var.bitwarden_smtp_password
-    admin_token       = random_password.admin_token.result
-    enable_admin_page = var.bitwarden_enable_admin_page
-    backup_schedule   = var.backup_schedule
-    bucket            = aws_s3_bucket.bucket.id
+    region              = var.region
+    aws_key_id          = aws_iam_access_key.user.id
+    aws_secret_key      = aws_iam_access_key.user.secret
+    acme_email          = var.bitwarden_acme_email
+    signups_allowed     = var.bitwarden_signups_allowed
+    domain              = var.domain
+    smtp_host           = var.bitwarden_smtp_host
+    smtp_port           = var.bitwarden_smtp_port
+    smtp_ssl            = var.bitwarden_smtp_ssl
+    smtp_username       = var.bitwarden_smtp_username
+    smtp_password       = var.bitwarden_smtp_password
+    admin_token         = random_password.admin_token.result
+    enable_admin_page   = var.bitwarden_enable_admin_page
+    backup_schedule     = var.backup_schedule
+    bucket              = aws_s3_bucket.bucket.id
+    diun_notify_email   = var.diun_notify_email
+    diun_watch_schedule = var.diun_watch_schedule
   })
 
   tags = merge(
