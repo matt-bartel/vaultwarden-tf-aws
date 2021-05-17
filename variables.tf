@@ -112,3 +112,24 @@ variable "diun_watch_schedule" {
   description = "Schedule for checking for new docker image versions"
 }
 
+variable "diun_gotify_endpoint" {
+  type    = string
+  default = ""
+}
+
+variable "diun_gotify_token" {
+  type      = string
+  sensitive = true
+  default   = ""
+}
+
+variable "diun_gotify_priority" {
+  type    = string
+  default = "1"
+}
+
+variable "diun_gotify_timeout" {
+  type    = string
+  default = "10s"
+}
+

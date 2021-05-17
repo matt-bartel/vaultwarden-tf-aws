@@ -125,6 +125,7 @@ services:
       DIUN_PROVIDERS_DOCKER: "true"
       DIUN_PROVIDERS_DOCKER_ENDPOINT: "tcp://dockerproxy:2375"
       DIUN_PROVIDERS_DOCKER_WATCHBYDEFAULT: "true"
+      %{ if diun_notify_email != "" }
       DIUN_NOTIF_MAIL_HOST: "${smtp_host}"
       DIUN_NOTIF_MAIL_PORT: "${smtp_port}"
       DIUN_NOTIF_MAIL_SSL: "${smtp_ssl}"
@@ -132,6 +133,13 @@ services:
       DIUN_NOTIF_MAIL_TO: "${diun_notify_email}"
       DIUN_NOTIF_MAIL_USERNAME: "${smtp_username}"
       DIUN_NOTIF_MAIL_PASSWORD: "${smtp_password}"
+      %{ endif }
+      %{ if diun_gotify_endpoint != "" }
+      DIUN_NOTIF_GOTIFY_ENDPOINT: "${diun_gotify_endpoint}"
+      DIUN_NOTIF_GOTIFY_TOKEN: "${diun_gotify_token}"
+      DIUN_NOTIF_GOTIFY_PRIORITY: "${diun_gotify_priority}"
+      DIUN_NOTIF_GOTIFY_TIMEOUT: "${diun_gotify_timeout}"
+      %{ endif }
     depends_on:
       - dockerproxy
       - traefik
@@ -162,7 +170,7 @@ fi
 # start bitwarden
 echo "starting bitwarden in 5 minutes"
 cd /home/ubuntu/compose
-sleep 300 # wait 5 minutes for other resources to come up
+sleep 120 # wait 2 minutes for other resources to come up
 sudo docker-compose up -d
 cd ..
 
