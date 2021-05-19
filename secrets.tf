@@ -15,6 +15,7 @@ resource "aws_secretsmanager_secret_version" "config_value" {
     smtp_ssl             = var.bitwarden_smtp_ssl
     smtp_username        = var.bitwarden_smtp_username
     smtp_password        = var.bitwarden_smtp_password
+    enable_admin_page    = var.bitwarden_enable_admin_page
     admin_token          = random_password.admin_token.result
     backup_schedule      = var.backup_schedule
     bucket               = aws_s3_bucket.bucket.id
