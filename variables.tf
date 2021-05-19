@@ -14,7 +14,7 @@ variable "public_subnet_cidr" {
 }
 
 variable "ssh_cidr" {
-  type = string
+  type    = string
   default = "0.0.0.0/0"
 }
 
@@ -80,12 +80,6 @@ variable "bitwarden_acme_email" {
   type = string
 }
 
-variable "iam_user_name" {
-  type        = string
-  description = "A user that will be created for the ec2 instance to access the s3 bucket"
-  default     = "bitwarden"
-}
-
 variable "ec2_key_pair_name" {
   type        = string
   description = "Name of an existing ec2 key pair"
@@ -97,6 +91,40 @@ variable "ec2_instance_type" {
 }
 
 variable "ec2_volume_size" {
-  type = number
+  type    = number
   default = 8
 }
+
+variable "diun_notify_email" {
+  type        = string
+  description = "Email for docker image update notifications"
+}
+
+variable "diun_watch_schedule" {
+  type        = string
+  default     = "0 */6 * * *"
+  description = "Schedule for checking for new docker image versions"
+}
+
+variable "diun_gotify_endpoint" {
+  type        = string
+  default     = ""
+  description = "gotify endpoint for docker image update notifications"
+}
+
+variable "diun_gotify_token" {
+  type      = string
+  sensitive = true
+  default   = ""
+}
+
+variable "diun_gotify_priority" {
+  type    = string
+  default = "1"
+}
+
+variable "diun_gotify_timeout" {
+  type    = string
+  default = "10s"
+}
+
