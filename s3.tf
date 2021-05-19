@@ -10,8 +10,6 @@ resource "random_pet" "s3_resources_name" {
   separator = "-"
 }
 
-# data "aws_canonical_user_id" "current_user" {}
-
 resource "aws_s3_bucket" "bucket" {
   bucket = random_pet.s3_name.id
   acl    = "private"
@@ -136,83 +134,6 @@ resource "aws_s3_bucket_public_access_block" "resources" {
   block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
-}
-
-data "aws_iam_policy_document" "s3policy" {
-  statement {
-    sid       = "AllowBitwardenInstanceProfile"
-    effect    = "Allow"
-    resources = [aws_s3_bucket.bucket.arn]
-    actions   = ["s3:ListBucket"]
-    principals {
-      type        = "AWS"
-      identifiers = [aws_iam_role.role.arn]
-    }
-  }
-
-  statement {
-    sid       = "AllowBitwardenInstanceProfileContents"
-    effect    = "Allow"
-    resources = ["${aws_s3_bucket.bucket.arn}/*"]
-    actions = [
-      "s3:PutObject",
-      "s3:GetObject",
-      "s3:DeleteObject",
-      "s3:PutObjectAcl"
-    ]
-    principals {
-      type        = "AWS"
-      identifiers = [aws_iam_role.role.arn]
-    }
-  }
-
-  statement {
-    sid       = "DenyNotBitwardenVPCE"
-    effect    = "Deny"
-    resources = ["${aws_s3_bucket.bucket.arn}/*"]
-    actions   = ["s3:*"]
-    principals {
-      type        = "*"
-      identifiers = ["*"]
-    }
-    condition {
-      test     = "StringNotEquals"
-      variable = "aws:SourceVpce"
-      values   = [aws_vpc_endpoint.s3.id]
-    }
-  }
-
-  statement {
-    sid       = "DenyIncorrectEncryptionHeader"
-    effect    = "Deny"
-    resources = ["${aws_s3_bucket.bucket.arn}/*"]
-    actions   = ["s3:PutObject"]
-    principals {
-      type        = "*"
-      identifiers = ["*"]
-    }
-    condition {
-      test     = "StringNotEquals"
-      variable = "s3:x-amz-server-side-encryption"
-      values   = ["AES256"]
-    }
-  }
-
-  statement {
-    sid       = "DenyUnencryptedObjectUploads"
-    effect    = "Deny"
-    resources = ["${aws_s3_bucket.bucket.arn}/*"]
-    actions   = ["s3:PutObject"]
-    principals {
-      type        = "*"
-      identifiers = ["*"]
-    }
-    condition {
-      test     = "Null"
-      variable = "s3:x-amz-server-side-encryption"
-      values   = ["true"]
-    }
-  }
 }
 
 resource "aws_s3_bucket_policy" "policy" {

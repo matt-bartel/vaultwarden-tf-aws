@@ -1,6 +1,5 @@
 version: '3.5'
 
-# TODO: diun - remove optional stuff if it isn't needed. Might need a separate compose?
 services:
   dockerproxy:
     image: tecnativa/docker-socket-proxy

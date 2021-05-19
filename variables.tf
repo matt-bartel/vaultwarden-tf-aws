@@ -80,12 +80,6 @@ variable "bitwarden_acme_email" {
   type = string
 }
 
-variable "iam_user_name" {
-  type        = string
-  description = "A user that will be created for the ec2 instance to access the s3 bucket"
-  default     = "bitwarden"
-}
-
 variable "ec2_key_pair_name" {
   type        = string
   description = "Name of an existing ec2 key pair"
@@ -113,8 +107,9 @@ variable "diun_watch_schedule" {
 }
 
 variable "diun_gotify_endpoint" {
-  type    = string
-  default = ""
+  type        = string
+  default     = ""
+  description = "gotify endpoint for docker image update notifications"
 }
 
 variable "diun_gotify_token" {
