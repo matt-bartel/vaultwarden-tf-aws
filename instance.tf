@@ -34,10 +34,10 @@ resource "aws_network_interface" "net" {
 }
 
 resource "aws_instance" "instance" {
-  ami                      = data.aws_ami.ubuntu.id
-  instance_type            = var.ec2_instance_type
-  key_name                 = var.ec2_key_pair_name
-  aws_iam_instance_profile = aws_iam_instance_profile.profile.id
+  ami                  = data.aws_ami.ubuntu.id
+  instance_type        = var.ec2_instance_type
+  key_name             = var.ec2_key_pair_name
+  iam_instance_profile = aws_iam_instance_profile.profile.id
 
   network_interface {
     network_interface_id = aws_network_interface.net.id
