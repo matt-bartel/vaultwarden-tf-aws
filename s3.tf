@@ -72,7 +72,7 @@ resource "aws_s3_bucket" "resources" {
 resource "aws_s3_bucket_object" "compose" {
   bucket                 = aws_s3_bucket.resources.id
   key                    = "bitwarden-docker-compose.yml"
-  source                 = "templates/docker-compose.yml"
+  content                = file("templates/docker-compose.yml")
   server_side_encryption = "AES256"
 }
 
@@ -88,35 +88,35 @@ resource "aws_s3_bucket_object" "backup" {
 resource "aws_s3_bucket_object" "logrotate" {
   bucket                 = aws_s3_bucket.resources.id
   key                    = "bitwarden-logrotate"
-  source                 = "templates/bitwarden-logrotate"
+  content                = file("templates/bitwarden-logrotate")
   server_side_encryption = "AES256"
 }
 
 resource "aws_s3_bucket_object" "fail2ban_filter" {
   bucket                 = aws_s3_bucket.resources.id
   key                    = "fail2ban/filter"
-  source                 = "templates/bitwarden-fail2ban-filter"
+  content                = file("templates/bitwarden-fail2ban-filter")
   server_side_encryption = "AES256"
 }
 
 resource "aws_s3_bucket_object" "admin_fail2ban_filter" {
   bucket                 = aws_s3_bucket.resources.id
   key                    = "fail2ban/admin-filter"
-  source                 = "templates/bitwarden-admin-fail2ban-filter"
+  content                = file("templates/bitwarden-admin-fail2ban-filter")
   server_side_encryption = "AES256"
 }
 
 resource "aws_s3_bucket_object" "fail2ban_jail" {
   bucket                 = aws_s3_bucket.resources.id
   key                    = "fail2ban/jail"
-  source                 = "templates/bitwarden-fail2ban-jail"
+  content                = file("templates/bitwarden-fail2ban-jail")
   server_side_encryption = "AES256"
 }
 
 resource "aws_s3_bucket_object" "admin_fail2ban_jail" {
   bucket                 = aws_s3_bucket.resources.id
   key                    = "fail2ban/admin-jail"
-  source                 = "templates/bitwarden-admin-fail2ban-jail"
+  content                = file("templates/bitwarden-admin-fail2ban-jail")
   server_side_encryption = "AES256"
 }
 
