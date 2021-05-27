@@ -20,7 +20,7 @@ rm -rf awscliv2.zip aws
 
 # set up docker-compose.yml
 mkdir compose letsencrypt bitwarden diun
-chown ubuntu:ubuntu bitwarden
+chown ubuntu:ubuntu compose letsencrypt bitwarden diun
 aws secretsmanager get-secret-value --secret-id "${bitwarden_config_secret_arn}" | jq -r '.SecretString' > compose/.env
 aws s3 cp s3://${resources_bucket}/${bitwarden_compose_key} compose/docker-compose.yml
 

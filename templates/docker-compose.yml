@@ -17,10 +17,11 @@ services:
   traefik:
     image: "traefik:v2.4"
     container_name: "traefik"
+    user: 1000:1000
     command:
       - "--providers.docker=true"
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.web.address=:8080"
+      - "--entrypoints.websecure.address=:8443"
       - "--providers.docker.exposedbydefault=false"
       - "--providers.docker.endpoint=tcp://dockerproxy:2375"
       - "--providers.docker.network=internal"
@@ -30,8 +31,8 @@ services:
       #- "--log.level=DEBUG"
       #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
     ports:
-      - "80:80"
-      - "443:443"
+      - "80:8080"
+      - "443:8443"
     volumes:
       - "/home/ubuntu/letsencrypt:/letsencrypt"
     networks:
@@ -90,6 +91,7 @@ services:
   diun:
     image: crazymax/diun
     container_name: diun
+    user: 1000:1000
     volumes:
       - "/home/ubuntu/diun:/data"
     networks:
