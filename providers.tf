@@ -9,6 +9,13 @@ terraform {
       version = "~> 3.0"
     }
   }
+
+  backend "remote" {
+    organization = "mattb"
+    workspaces {
+      name = "vaultwarden-tf-aws"
+    }
+  }
 }
 
 provider "aws" {
