@@ -10,6 +10,3 @@ output "domain" {
   value = "https://${aws_route53_record.bw.name}"
 }
 
-output "admin_token" {
-  value = random_password.admin_token.result
-}
