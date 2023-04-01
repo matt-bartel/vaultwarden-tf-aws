@@ -3,7 +3,7 @@ signups_allowed=${signups_allowed}
 domain=${domain}
 smtp_host=${smtp_host}
 smtp_port=${smtp_port}
-smtp_ssl=${smtp_ssl}
+smtp_security=${smtp_security}
 smtp_username=${smtp_username}
 smtp_password=${smtp_password}
 %{ if enable_admin_page ~}

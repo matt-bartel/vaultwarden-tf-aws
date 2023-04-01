@@ -58,7 +58,7 @@ services:
       LOG_FILE: "/data/bitwarden.log"
       SMTP_HOST: "${smtp_host}"
       SMTP_PORT: "${smtp_port}"
-      SMTP_SSL: "${smtp_ssl}"
+      SMTP_SECURITY: "${smtp_security}"
       SMTP_FROM: "bitwarden@${domain}"
       SMTP_USERNAME: "${smtp_username}"
       SMTP_PASSWORD: "${smtp_password}"

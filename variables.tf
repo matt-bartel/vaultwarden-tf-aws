@@ -44,9 +44,9 @@ variable "bitwarden_smtp_port" {
   default = "587"
 }
 
-variable "bitwarden_smtp_ssl" {
-  type    = bool
-  default = true
+variable "bitwarden_smtp_security" {
+  type    = string
+  default = "starttls"
 }
 
 variable "bitwarden_smtp_username" {
