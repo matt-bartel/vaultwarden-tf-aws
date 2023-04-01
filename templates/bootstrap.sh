@@ -61,5 +61,6 @@ aws s3 cp s3://${resources_bucket}/${fail2ban_filter_key} /etc/fail2ban/filter.d
 aws s3 cp s3://${resources_bucket}/${fail2ban_jail_key} /etc/fail2ban/jail.d/bitwarden.local
 aws s3 cp s3://${resources_bucket}/${admin_fail2ban_filter_key} /etc/fail2ban/filter.d/bitwarden-admin.local
 aws s3 cp s3://${resources_bucket}/${admin_fail2ban_jail_key} /etc/fail2ban/jail.d/bitwarden-admin.local
-systemctl reload fail2ban
+systemctl enable fail2ban
+systemctl start fail2ban
 
