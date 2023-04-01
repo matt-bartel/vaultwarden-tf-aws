@@ -3,7 +3,7 @@ signups_allowed=${signups_allowed}
 domain=${domain}
 smtp_host=${smtp_host}
 smtp_port=${smtp_port}
-smtp_ssl=${smtp_ssl}
+smtp_security=${smtp_security}
 smtp_username=${smtp_username}
 smtp_password=${smtp_password}
 %{ if enable_admin_page ~}
@@ -15,7 +15,7 @@ DIUN_WATCH_SCHEDULE=${diun_watch_schedule}
 %{ if diun_notify_email != "" ~}
 DIUN_NOTIF_MAIL_HOST=${smtp_host}
 DIUN_NOTIF_MAIL_PORT=${smtp_port}
-DIUN_NOTIF_MAIL_SSL=${smtp_ssl}
+DIUN_NOTIF_MAIL_SSL=false
 DIUN_NOTIF_MAIL_FROM=diun@${domain}
 DIUN_NOTIF_MAIL_TO=${diun_notify_email}
 DIUN_NOTIF_MAIL_USERNAME=${smtp_username}

@@ -12,7 +12,7 @@ resource "aws_secretsmanager_secret_version" "config_value" {
     domain               = var.domain
     smtp_host            = var.bitwarden_smtp_host
     smtp_port            = var.bitwarden_smtp_port
-    smtp_ssl             = var.bitwarden_smtp_ssl
+    smtp_security        = var.bitwarden_smtp_security
     smtp_username        = var.bitwarden_smtp_username
     smtp_password        = var.bitwarden_smtp_password
     enable_admin_page    = var.bitwarden_enable_admin_page
