@@ -42,7 +42,7 @@ fi
 echo "starting bitwarden in 2 minutes"
 cd /home/ubuntu/compose
 sleep 120 # wait 2 minutes for other resources to come up
-docker-compose up -d
+docker compose up -d
 cd ..
 
 # backups
