@@ -15,7 +15,7 @@ services:
       - internal
     restart: unless-stopped
   traefik:
-    image: "traefik:v2.4"
+    image: "traefik:v2.10"
     container_name: "traefik"
     user: 1000:1000
     command:
@@ -23,7 +23,6 @@ services:
       - "--entrypoints.web.address=:8080"
       - "--entrypoints.websecure.address=:8443"
       - "--providers.docker.exposedbydefault=false"
-      - "--providers.docker.endpoint=tcp://dockerproxy:2375"
       - "--providers.docker.network=internal"
       - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
       - "--certificatesresolvers.myresolver.acme.email=${acme_email}"
@@ -76,15 +75,6 @@ services:
       - "traefik.http.routers.bitwarden-ui-http.middlewares=redirect-https"
       - "traefik.http.routers.bitwarden-ui-http.service=bitwarden-ui"
       - "traefik.http.services.bitwarden-ui.loadbalancer.server.port=8080"
-      - "traefik.http.routers.bitwarden-websocket-https.rule=Host(`${domain}`) && Path(`/notifications/hub`)"
-      - "traefik.http.routers.bitwarden-websocket-https.entrypoints=websecure"
-      - "traefik.http.routers.bitwarden-websocket-https.tls=true"
-      - "traefik.http.routers.bitwarden-websocket-https.service=bitwarden-websocket"
-      - "traefik.http.routers.bitwarden-websocket-http.rule=Host(`${domain}`) && Path(`/notifications/hub`)"
-      - "traefik.http.routers.bitwarden-websocket-http.entrypoints=web"
-      - "traefik.http.routers.bitwarden-websocket-http.middlewares=redirect-https"
-      - "traefik.http.routers.bitwarden-websocket-http.service=bitwarden-websocket"
-      - "traefik.http.services.bitwarden-websocket.loadbalancer.server.port=3012"
     depends_on:
       - traefik
     restart: unless-stopped
