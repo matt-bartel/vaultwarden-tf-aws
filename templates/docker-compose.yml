@@ -1,8 +1,6 @@
-version: '3.5'
-
 services:
   dockerproxy:
-    image: tecnativa/docker-socket-proxy
+    image: lscr.io/linuxserver/socket-proxy
     container_name: dockerproxy
     ports:
       - 2375
@@ -13,9 +11,12 @@ services:
       IMAGES: 1
     networks:
       - internal
+    read_only: true
+    tmpfs:
+      - /run
     restart: unless-stopped
   traefik:
-    image: "traefik:v2.10"
+    image: "traefik:v2.11"
     container_name: "traefik"
     user: 1000:1000
     command:
